@@ -1,0 +1,62 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+    "userRooms": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+    "roomCodes": {
+      "$code": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "rooms": {
+      "$roomId": {
+        ".read": "auth != null && data.child('memberIds').child(auth.uid).val() == true",
+        ".write": "auth != null && ((!data.exists() && newData.child('createdBy').val() == auth.uid && newData.child('memberIds').child(auth.uid).val() == true) || data.child('createdBy').val() == auth.uid || (data.child('memberIds').child(auth.uid).val() == true && newData.child('memberIds').child(auth.uid).val() == true) || (!data.child('memberIds').child(auth.uid).exists() && newData.child('memberIds').child(auth.uid).val() == true) || (data.child('memberIds').child(auth.uid).val() == true && !newData.child('memberIds').child(auth.uid).exists()))"
+      }
+    },
+    "roomMembers": {
+      "$roomId": {
+        ".read": "auth != null && root.child('rooms').child($roomId).child('memberIds').child(auth.uid).val() == true",
+        "$uid": {
+          ".write": "auth != null && (auth.uid == $uid || root.child('rooms').child($roomId).child('createdBy').val() == auth.uid)"
+        }
+      }
+    },
+    "tags": {
+      "$roomId": {
+        ".read": "auth != null && root.child('rooms').child($roomId).child('memberIds').child(auth.uid).val() == true",
+        "$tagId": {
+          ".write": "auth != null && root.child('rooms').child($roomId).child('memberIds').child(auth.uid).val() == true"
+        }
+      }
+    },
+    "expenses": {
+      "$roomId": {
+        ".read": "auth != null && root.child('rooms').child($roomId).child('memberIds').child(auth.uid).val() == true",
+        "$expenseId": {
+          ".write": "auth != null && root.child('rooms').child($roomId).child('memberIds').child(auth.uid).val() == true && (!newData.exists() || newData.child('amount').val() > 0)"
+        }
+      }
+    },
+    "settlements": {
+      "$roomId": {
+        ".read": "auth != null && root.child('rooms').child($roomId).child('memberIds').child(auth.uid).val() == true",
+        "$settlementId": {
+          ".write": "auth != null && root.child('rooms').child($roomId).child('memberIds').child(auth.uid).val() == true && (!newData.exists() || newData.child('amount').val() > 0)"
+        }
+      }
+    }
+  }
+}

@@ -37,8 +37,10 @@ const starterTags = [
   { name: "Shopping", color: "#db2777" },
 ];
 
+const inviteOrigin = "https://bbc-money-management.netlify.app";
+
 function roomInvite(code: string) {
-  return `https://bbc-money-management.netlify.app/join/${code}`;
+  return `${inviteOrigin}/join/${code}`;
 }
 
 function objectValues<T extends object>(value: unknown): Array<T & { id: string }> {
@@ -53,6 +55,7 @@ function normalizeRoom(id: string, room: RoomRecord): Room {
   return {
     ...room,
     id,
+    inviteLink: roomInvite(room.code),
     memberIds: Object.keys(room.memberIds ?? {}),
     totalExpenses: room.totalExpenses ?? 0,
   };

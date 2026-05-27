@@ -32,13 +32,13 @@ type ExpenseRecord = Omit<Expense, "id">;
 const starterTags = [
   { name: "Food", color: "#16a34a" },
   { name: "Travel", color: "#2563eb" },
-  { name: "Rent", color: "#9333ea" },
+  { name: "Labour Wages", color: "#9333ea" },
   { name: "Petrol", color: "#f97316" },
   { name: "Shopping", color: "#db2777" },
 ];
 
 function roomInvite(code: string) {
-  return `${window.location.origin}/join/${code}`;
+  return `https://bbc-money-management.netlify.app/join/${code}`;
 }
 
 function objectValues<T extends object>(value: unknown): Array<T & { id: string }> {
